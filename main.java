@@ -16,7 +16,10 @@ public class main {
     public static void main(String[] args) throws IOException {
         stops = new LinkedList<>();
         createGraph();
+        TripTable tp = new TripTable();
+        tp.readDate();
         System.out.println(graph);
+        System.out.println(tp);
 
         for (DirectedEdge edge : new DijkstraSP(graph, 12478).pathTo(6050))
             System.out.println(edge);

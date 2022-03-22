@@ -7,27 +7,37 @@ public class TripTable {
 
     private static LinkedList<Trip> trips;
 
-    public static void TripTable(String time){
+    public TripTable() {
         trips = new LinkedList<>();
     }
 
     static public class Trip {
         public int tripID;
-        public static LinkedList<TripInfo> transfers;
+        public LinkedList<TripInfo> transfers = new LinkedList<>();
 
         public Trip(int tripID) {
             this.tripID = tripID;
-            transfers = new LinkedList<>();
         }
 
-        public void addTripInfo(String[] info){
+        public void addTripInfo(String[] info) {
             transfers.add(new TripInfo(info));
+        }
+
+        @Override
+        public String toString() {
+            System.out.printf("\nTrip %d contains the following stops. The below info is in the following format of:\nStop ID :: Arrival Time :: Depart Time :: Stop Sequence :: " +
+                    "Distance Travelled\n\n", tripID);
+            StringBuilder sb = new StringBuilder();
+            for(TripInfo info : transfers)
+                sb.append(info.toString());
+            return sb.toString();
         }
 
         static public class TripInfo {
 
             public TripTime arrive, depart;
-            public int stopID, stopSeq, stopHeadSign, pickupType, dropType, distTrav;
+            public int stopID, stopSeq, stopHeadSign, pickupType, dropType;
+            public double dist;
 
             //trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign
             //pickup_type,drop_off_type,shape_dist_traveled
@@ -36,10 +46,10 @@ public class TripTable {
                 this.stopHeadSign = -1;
                 this.pickupType = -1;
                 this.dropType = -1;
-                this.distTrav = -1;
+                this.dist = 0;
 
                 if (values.length == 9 && !values[8].equals("") && !values[8].equals(" "))
-                    distTrav = Integer.parseInt(values[8]);
+                    dist = Double.parseDouble(values[8]);
                 if (!values[4].equals("") && !values[4].equals(" "))
                     stopSeq = Integer.parseInt(values[4]);
                 if (!values[5].equals("") && !values[5].equals(" "))
@@ -51,7 +61,14 @@ public class TripTable {
 
                 arrive = new TripTime(values[1]);
                 depart = new TripTime(values[2]);
-                stopID = Integer.parseInt(values[0]);
+                stopID = Integer.parseInt(values[3]);
+            }
+
+            @Override
+            public String toString() {
+                StringBuilder sb = new StringBuilder();
+                sb.append(stopID).append(" :: ").append(arrive.toString()).append(" :: ").append(depart.toString()).append(" :: ").append(stopSeq).append(" :: ").append(dist).append("\n");
+                return sb.toString();
             }
 
         }
@@ -63,16 +80,23 @@ public class TripTable {
         public int min;
         public int sec;
 
-        public  TripTime(String time){
+        public TripTime(String time) {
             String[] values = time.split(":");
             this.hour = Integer.parseInt(values[0].strip());
             this.min = Integer.parseInt(values[1].strip());
             this.sec = Integer.parseInt(values[2].strip());
         }
 
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append(hour).append(":").append(min).append(":").append(sec);
+            return sb.toString();
+        }
+
     }
 
-    public void readDate(String fileName) throws FileNotFoundException {
+    public void readDate() throws FileNotFoundException {
         // Read each line and make a new trip per ID and add info for each line to the trip
 
         //trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign
@@ -82,9 +106,9 @@ public class TripTable {
 
         Trip newTrip = new Trip(9017927);
 
-        while(sr.hasNextLine()){
+        while (sr.hasNextLine()) {
             String[] values = sr.nextLine().split(",");
-            if(main.validTime(values[1]) && main.validTime(values[2])) {
+            if (main.validTime(values[1]) && main.validTime(values[2])) {
                 int tripID = Integer.parseInt(values[0]);
                 if (tripID != newTrip.tripID) {
                     trips.add(newTrip);
@@ -95,4 +119,27 @@ public class TripTable {
         }
     }
 
+    public Iterable<Trip> timeQuery(String time) {
+        TripTime query = new TripTime(time);
+        LinkedList<Trip> result = new LinkedList<>();
+
+        for (Trip trip : trips) {
+            for (Trip.TripInfo info : trip.transfers)
+                if (info.arrive.equals(query))
+                    result.add(trip);
+            break;
+
+        }
+
+        return result;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        System.out.println("The table contains the following trips:\n\n");
+        for(Trip trip : trips)
+            System.out.println(trip);
+        return sb.toString();
+    }
 }
