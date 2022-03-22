@@ -1,12 +1,10 @@
-<<<<<<< Updated upstream
+
+import edu.princeton.cs.algs4.DijkstraSP;
 import edu.princeton.cs.algs4.DirectedEdge;
 import edu.princeton.cs.algs4.EdgeWeightedDigraph;
-=======
-import edu.princeton.cs.algs4.*;
-import org.jetbrains.annotations.NotNull;
->>>>>>> Stashed changes
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -16,18 +14,14 @@ public class main {
     private static LinkedList<BusStop> stops;
 
     public static void main(String[] args) throws IOException {
-<<<<<<< Updated upstream
-
-=======
-        graph = createGraph();
+        createGraph();
         System.out.println(graph);
 
         for (DirectedEdge edge : new DijkstraSP(graph, 12478).pathTo(5408))
             System.out.println(edge);
     }
 
-    static EdgeWeightedDigraph createGraph() throws FileNotFoundException {
->>>>>>> Stashed changes
+    static void createGraph() throws FileNotFoundException {
         Scanner sr = new Scanner(new File("stops.txt"));
 
         sr.nextLine();
@@ -41,7 +35,7 @@ public class main {
             stops.add(new BusStop(stop));
         }
 
-        EdgeWeightedDigraph graph = new EdgeWeightedDigraph(largestStop + 1);
+        graph = new EdgeWeightedDigraph(largestStop + 1);
         sr = new Scanner(new File("transfers.txt"));
         sr.nextLine();
 
@@ -59,22 +53,12 @@ public class main {
 
         int tripID = -1;
         int pastStop = -1;
-<<<<<<< Updated upstream
-        while(sr.hasNextLine()) {
-=======
         boolean add = true;
         while (sr.hasNextLine()) {
->>>>>>> Stashed changes
             String[] values = sr.nextLine().split(",");
             if (Integer.parseInt(values[0]) != tripID) {
                 tripID = Integer.parseInt(values[0]);
-<<<<<<< Updated upstream
                 pastStop = Integer.parseInt(values[3]);
-            }
-            else {
-                graph.addEdge(new DirectedEdge(pastStop, Integer.parseInt(values[3]), 1));
-                pastStop = Integer.parseInt(values[3]);
-=======
             } else {
                 if(validTime(values[1])) {
                     int to = Integer.parseInt(values[3]);
@@ -84,16 +68,8 @@ public class main {
                     if (add)
                         graph.addEdge(new DirectedEdge(pastStop, to, 1));
                 }
->>>>>>> Stashed changes
             }
         }
-
-        System.out.println(graph.toString());
-
-
-
-
-
     }
 
     static boolean validTime(String time) {

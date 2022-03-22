@@ -1,4 +1,3 @@
-import org.jetbrains.annotations.NotNull;
 
 public class BusStop {
 
@@ -24,20 +23,6 @@ public class BusStop {
         this.url = url;
         this.locType = locType;
         this.parent = parent;
-    }
-
-    public BusStop(@NotNull String stopInfo) {
-        String[] values = stopInfo.split(",");
-        this.stopID = Integer.parseInt(values[0]);
-        this.code = Integer.parseInt(values[1]);
-        this.name = values[2];
-        this.destination = values[3];
-        this.latitude = Double.parseDouble(values[4]);
-        this.longitude = Double.parseDouble(values[5]);
-        this.zoneID = values[6];
-        this.url = values[7];
-        this.locType = Integer.parseInt(values[8]);
-        this.parent = ArrayIndexOutOfBoundsException ? Integer.parseInt(values[9]);
     }
 
     public int getStopID() {
