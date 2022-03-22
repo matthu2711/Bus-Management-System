@@ -6,6 +6,9 @@ import java.util.Scanner;
 public class TripTable {
 
     private static LinkedList<Trip> trips;
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_GREEN = "\u001B[32m";
 
     public TripTable() {
         trips = new LinkedList<>();
@@ -25,9 +28,9 @@ public class TripTable {
 
         @Override
         public String toString() {
-            System.out.printf("\nTrip %d contains the following stops. The below info is in the following format of:\nStop ID :: Arrival Time :: Depart Time :: Stop Sequence :: " +
-                    "Distance Travelled\n\n", tripID);
             StringBuilder sb = new StringBuilder();
+            sb.append(ANSI_YELLOW).append("\nTrip ").append(tripID).append(" contains the following stops. The below info is in the following format of:\nStop ID" +
+                    " :: Arrival Time :: Depart Time :: Stop Sequence :: Distance Travelled\n\n").append(ANSI_RESET);
             for(TripInfo info : transfers)
                 sb.append(info.toString());
             return sb.toString();
@@ -137,9 +140,9 @@ public class TripTable {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        System.out.println("The table contains the following trips:\n\n");
+        sb.append("The table contains the following trips:\n\n");
         for(Trip trip : trips)
-            System.out.println(trip);
+            sb.append(trip.toString());
         return sb.toString();
     }
 }
