@@ -10,10 +10,8 @@ public class main {
     public static void main(String[] args) throws IOException {
         EdgeWeightedDigraph graph = createGraph();
         System.out.println(graph);
-        FW fw = new FW(graph);
 
-        boolean hasPath = fw.hasPath(12478, 5408);
-        for(DirectedEdge edge : fw.path(12478, 5408))
+        for(DirectedEdge edge : new DijkstraSP(graph, 12478).pathTo(5408))
             System.out.println(edge);
         }
 
