@@ -10,9 +10,9 @@ public class BusStop {
     String zoneID;
     String url;
     int locType;
-    int parent;
+    String parent;
 
-    public BusStop(int stopID, int code, String name, String destination, double latitude, double longitude, String zoneID, String url, int locType, int parent) {
+    public BusStop(int stopID, int code, String name, String destination, double latitude, double longitude, String zoneID, String url, int locType, String parent) {
         this.stopID = stopID;
         this.code = code;
         this.name = name;
@@ -97,11 +97,11 @@ public class BusStop {
         this.locType = locType;
     }
 
-    public int getParent() {
+    public String getParent() {
         return parent;
     }
 
-    public void setParent(int parent) {
+    public void setParent(String parent) {
         this.parent = parent;
     }
 }
