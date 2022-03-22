@@ -102,8 +102,8 @@ public class main {
 
     private static String change(String name){
         String chars = name.substring(0, 2).strip();
-        if (chars.toUpperCase().equals("WB") || chars.toUpperCase().equals("SB") || chars.toUpperCase().equals("NB") || chars.toUpperCase().equals("EB")) {
-            return name.substring(3).trim() + name.substring(2,3) + name.substring(0,2);
+        if (chars.equalsIgnoreCase("WB") || chars.equalsIgnoreCase("SB") || chars.equalsIgnoreCase("NB") || chars.equalsIgnoreCase("EB")) {
+            return name.substring(3).trim() + name.charAt(2) + name.substring(0,2);
         }
         return name;
     }
@@ -115,6 +115,7 @@ public class main {
         for (DirectedEdge edge : sp.pathTo(to))
             sb.append(edge.to()).append(" -> ").append(edge.from()).append("\n");
         sb.append("This path has a cost of: ").append(sp.distTo(to)).append("\n");
+        System.out.println(sb);
     }
 }
 

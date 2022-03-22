@@ -29,8 +29,10 @@ public class TripTable {
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            sb.append(ANSI_YELLOW).append("\nTrip ").append(tripID).append(" contains the following stops. The below info is in the following format of:\nStop ID" +
-                    " :: Arrival Time :: Depart Time :: Stop Sequence :: Distance Travelled\n\n").append(ANSI_RESET);
+            sb.append(ANSI_YELLOW).append("\nTrip ").append(tripID).append("""
+                     contains the following stops. The below info is in the following format of:
+                    Stop ID :: Arrival Time :: Depart Time :: Stop Sequence :: Distance Travelled
+                    """).append(ANSI_RESET);
             for(TripInfo info : transfers)
                 sb.append(info.toString());
             return sb.toString();
@@ -69,9 +71,7 @@ public class TripTable {
 
             @Override
             public String toString() {
-                StringBuilder sb = new StringBuilder();
-                sb.append(stopID).append(" :: ").append(arrive.toString()).append(" :: ").append(depart.toString()).append(" :: ").append(stopSeq).append(" :: ").append(dist).append("\n");
-                return sb.toString();
+                return stopID + " :: " + arrive.toString() + " :: " + depart.toString() + " :: " + stopSeq + " :: " + dist + "\n";
             }
 
         }
@@ -92,9 +92,7 @@ public class TripTable {
 
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(hour).append(":").append(min).append(":").append(sec);
-            return sb.toString();
+            return hour + ":" + min + ":" + sec;
         }
 
     }
