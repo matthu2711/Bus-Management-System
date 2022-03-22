@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4757aebc-3b41-4ed5-a23d-2ad648421854" name="Changes" comment="- Changed from EdgeWeightedDigraph DS to AdjMatrixEdgeWeightedDigraph DS to make use of FloydWarshall methods">
       <change beforePath="$PROJECT_DIR$/main.java" beforeDir="false" afterPath="$PROJECT_DIR$/main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Bus-Management-System/main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Bus-Management-System/main.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +117,7 @@
       <workItem from="1647631866138" duration="7111000" />
       <workItem from="1647639295453" duration="66000" />
       <workItem from="1647639373590" duration="675000" />
-      <workItem from="1647640096741" duration="41918000" />
+      <workItem from="1647640096741" duration="42558000" />
     </task>
     <task id="LOCAL-00001" summary="- Created initial graph with stops and their edges">
       <created>1647637860836</created>
