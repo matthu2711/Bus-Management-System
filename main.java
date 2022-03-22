@@ -16,9 +16,7 @@ public class main {
         createGraph();
         TripTable tp = new TripTable();
         tp.readDate();
-        System.out.println(tp);
-        System.out.println(graph);
-        printPath(12478, 10148);
+        printPath(12478, 11592);
     }
 
     static void createGraph() throws FileNotFoundException {
@@ -111,10 +109,14 @@ public class main {
 
     private static void printPath(int from, int to){
         DijkstraSP sp = new DijkstraSP(graph, from);
+        int finalVertex = -1;
         StringBuilder sb = new StringBuilder();
         sb.append("The path from ").append(from).append(" to ").append(to).append(" is as follows:\n");
-        for (DirectedEdge edge : sp.pathTo(to))
-            sb.append(edge.to()).append(" -> ").append(edge.from()).append("\n");
+        for (DirectedEdge edge : sp.pathTo(to)) {
+            sb.append(edge.from()).append(" -> ");
+            finalVertex = edge.to();
+        }
+        sb.append(finalVertex).append("\n");
         sb.append("This path has a cost of: ").append(sp.distTo(to)).append("\n");
         System.out.println(sb);
     }
