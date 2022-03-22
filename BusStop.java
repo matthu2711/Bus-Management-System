@@ -12,7 +12,8 @@ public class BusStop {
     int locType;
     String parent;
 
-    public BusStop(int stopID, int code, String name, String destination, double latitude, double longitude, String zoneID, String url, int locType, String parent) {
+    public BusStop(int stopID, int code, String name, String destination, double latitude, double longitude,
+                   String zoneID, String url, int locType, String parent) {
         this.stopID = stopID;
         this.code = code;
         this.name = name;
