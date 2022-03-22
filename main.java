@@ -1,14 +1,21 @@
-import edu.princeton.cs.algs4.DirectedEdge;
-import edu.princeton.cs.algs4.EdgeWeightedDigraph;
+import edu.princeton.cs.algs4.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
 public class main {
 
     public static void main(String[] args) throws IOException {
+        EdgeWeightedDigraph graph = createGraph();
+        System.out.println(graph);
 
+        for(DirectedEdge edge : new DijkstraSP(graph, 12478).pathTo(5408))
+            System.out.println(edge);
+        }
+
+    private static EdgeWeightedDigraph createGraph() throws FileNotFoundException {
         Scanner sr = new Scanner(new File("stops.txt"));
 
         sr.nextLine();
@@ -38,27 +45,29 @@ public class main {
 
         sr = new Scanner(new File("stop_times.txt"));
         sr.nextLine();
+        //System.out.println(graph);
 
         int tripID = -1;
         int pastStop = -1;
+        boolean add = true;
         while(sr.hasNextLine()) {
             String[] values = sr.nextLine().split(",");
             if(Integer.parseInt(values[0]) != tripID){
                 tripID = Integer.parseInt(values[0]);
-                pastStop = Integer.parseInt(values[3]);
             }
             else {
-                graph.addEdge(new DirectedEdge(pastStop, Integer.parseInt(values[3]), 1));
-                pastStop = Integer.parseInt(values[3]);
+                int to = Integer.parseInt(values[3]);
+                for(DirectedEdge e : graph.adj(pastStop))
+                    if(e.to() == to)
+                        add = false;
+                if(add)
+                    graph.addEdge(new DirectedEdge(pastStop, to, 1));
             }
+            pastStop = Integer.parseInt(values[3]);
+            add = true;
         }
 
-        System.out.println(graph.toString());
-
-
-
-
-
+        return graph;
     }
 }
 
