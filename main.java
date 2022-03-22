@@ -1,5 +1,8 @@
-import edu.princeton.cs.algs4.*;
 
+import edu.princeton.cs.algs4.DijkstraAllPairsSP;
+import edu.princeton.cs.algs4.DijkstraSP;
+import edu.princeton.cs.algs4.DirectedEdge;
+import edu.princeton.cs.algs4.EdgeWeightedDigraph;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,13 +10,19 @@ import java.util.*;
 
 public class main {
 
-    public static void main(String[] args) throws IOException {
-        EdgeWeightedDigraph graph = createGraph();
-        System.out.println(graph);
+    private static EdgeWeightedDigraph graph;
+    private static LinkedList<BusStop> stops;
+    private static DijkstraAllPairsSP sp;
 
-        for(DirectedEdge edge : new DijkstraSP(graph, 12478).pathTo(5408))
-            System.out.println(edge);
-        }
+    public static void main(String[] args) throws IOException {
+        stops = new LinkedList<>();
+        createGraph();
+        TripTable tp = new TripTable();
+        tp.readDate();
+
+        System.out.println(graph);
+        printPath(12478, 11075);
+    }
 
     private static EdgeWeightedDigraph createGraph() throws FileNotFoundException {
         Scanner sr = new Scanner(new File("stops.txt"));
@@ -68,6 +77,16 @@ public class main {
         }
 
         return graph;
+    }
+
+    private static void printPath(int from, int to){
+        DijkstraSP sp = new DijkstraSP(graph, from);
+        StringBuilder sb = new StringBuilder();
+        sb.append("The path from ").append(from).append(" to ").append(to).append(" is as follows:\n");
+        for (DirectedEdge edge : sp.pathTo(to))
+            sb.append(edge.to()).append(" -> ").append(edge.from()).append("\n");
+        sb.append("This path has a cost of: ").append(sp.distTo(to)).append("\n");
+
     }
 }
 
