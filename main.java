@@ -17,10 +17,9 @@ public class main {
     public static void main(String[] args) throws IOException {
         stops = new LinkedList<>();
         createGraph();
-        TripTable tp = new TripTable();
-        tp.readDate();
+        TripTable tt = new TripTable();
 
-        tp.timeQuery("9:05:36");
+        tt.timeQuery("9:05:36");
     }
 
     static void createGraph() throws FileNotFoundException {
@@ -46,7 +45,7 @@ public class main {
             if (values[2].equals("0"))
                 graph.addEdge(new DirectedEdge(Integer.parseInt(values[0]), Integer.parseInt(values[1]), 2));
             else
-                graph.addEdge(new DirectedEdge(Integer.parseInt(values[0]), Integer.parseInt(values[1]), Integer.parseInt(values[3]) / 100));
+                graph.addEdge(new DirectedEdge(Integer.parseInt(values[0]), Integer.parseInt(values[1]), Integer.parseInt(values[3]) / 100.0));
         }
 
         sr = new Scanner(new File("stop_times.txt"));

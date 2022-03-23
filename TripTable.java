@@ -2,17 +2,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 public class TripTable implements Iterable<Trip> {
 
     private static LinkedList<Trip> trips;
 
 
-    public TripTable() {
+    public TripTable() throws FileNotFoundException {
         trips = new LinkedList<>();
+        readDate();
     }
 
     static public class TripTime implements Comparable<TripTime> {
@@ -74,9 +73,23 @@ public class TripTable implements Iterable<Trip> {
                     result.add(trip);
         }
 
-        System.out.println(main.ANSI_GREEN + "The following trips all contain the arrival time of " + time + main.ANSI_RESET);
-        for(Trip trip: result)
-            System.out.println(trip);
+        Collections.sort(result);
+
+        if(result.size() == 0){
+            System.out.println("No trips contain this arrival time of " + time);
+        }
+        else {
+            StringBuilder sb1 = new StringBuilder();
+            StringBuilder sb2 = new StringBuilder();
+            for (Trip trip : result) {
+                sb1.append(trip.tripID).append(", ");
+                sb2.append(trip);
+            }
+            System.out.println(sb2);
+            System.out.println(main.ANSI_GREEN + "The following " + (result.size() > 1 ? "trips all contain" : "trip contains") + " the arrival time of " + time +
+                    ": (The information for " + (result.size() > 1 ? "each trip" : "the trip") + " has been outputted above)" + main.ANSI_RESET);
+            System.out.println(sb1);
+        }
     }
 
     @Override
@@ -94,7 +107,7 @@ public class TripTable implements Iterable<Trip> {
     }
 }
 
- class Trip implements Iterable<TripInfo>{
+ class Trip implements Iterable<TripInfo>, Comparable<Trip>{
     public int tripID;
     public LinkedList<TripInfo> transfers = new LinkedList<>();
 
@@ -109,10 +122,10 @@ public class TripTable implements Iterable<Trip> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(main.ANSI_YELLOW).append("\nTrip ").append(tripID).append("""
+        sb.append(main.ANSI_YELLOW).append("\n\nTrip ").append(tripID).append("""
                      contains the following stops. The below info is in the following format of:
-                    Stop ID :: Arrival Time :: Depart Time :: Stop Sequence :: Distance Travelled
-                    """).append(main.ANSI_RESET);
+                    Stop ID :: Arrival Time :: Depart Time :: Distance Travelled
+                    """).append(main.ANSI_RESET).append("\n");
         for(TripInfo info : transfers)
             sb.append(info.toString());
         return sb.toString();
@@ -122,7 +135,13 @@ public class TripTable implements Iterable<Trip> {
      public Iterator<TripInfo> iterator(){
          return transfers.iterator();
      }
-}
+
+     @Override
+     public int compareTo(@NotNull Trip o) {
+         int compareID = o.tripID;
+         return this.tripID - compareID;
+     }
+ }
 
  class TripInfo {
 
@@ -157,6 +176,28 @@ public class TripTable implements Iterable<Trip> {
 
     @Override
     public String toString() {
-        return stopID + " :: " + arrive.toString() + " :: " + depart.toString() + " :: " + stopSeq + " :: " + dist + "\n";
+        StringBuilder sb = new StringBuilder();
+        sb.append(stopID);
+        sb.append(" ".repeat(Math.max(0, 5 - String.valueOf(stopID).length())));
+        sb.append(" :: ");
+
+        TripInfoString(sb, arrive);
+
+        TripInfoString(sb, depart);
+
+        sb.append(dist).append("\n");
+        return sb.toString();
     }
-}
+
+     private void TripInfoString(StringBuilder sb, TripTable.TripTime arrive) {
+         if(arrive.hour <= 9)
+             sb.append("0");
+         sb.append(arrive.hour).append(":");
+         if(arrive.min <= 9)
+             sb.append("0");
+         sb.append(arrive.min).append(":");
+         if(arrive.sec <= 9)
+             sb.append("0");
+         sb.append(arrive.sec).append(" :: ");
+     }
+ }
