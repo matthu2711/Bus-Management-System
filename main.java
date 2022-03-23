@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.*;
 
 public class main {
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_GREEN = "\u001B[32m";
     private static EdgeWeightedDigraph graph;
     private static LinkedList<BusStop> stops;
 
@@ -16,9 +19,8 @@ public class main {
         createGraph();
         TripTable tp = new TripTable();
         tp.readDate();
-        System.out.println(tp);
-        System.out.println(graph);
-        printPath(12478, 10148);
+
+        tp.timeQuery("9:05:36");
     }
 
     static void createGraph() throws FileNotFoundException {
