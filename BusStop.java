@@ -105,5 +105,14 @@ public class BusStop {
     public void setParent(String parent) {
         this.parent = parent;
     }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nStop ID: ").append(stopID).append("\nStop Code: ").append(code).append("\nStop Name: ").append(name).append("\nStop Destination: ").append(destination);
+        sb.append("\nStop Latitude, Longitude: ").append(latitude).append(", ").append(longitude).append("\nStop Zone: ").append(zoneID).append("\nStop Location Type: ");
+        sb.append(locType).append("\nStop Parent: ").append(parent).append("\n\n");
+        return sb.toString();
+    }
 }
 

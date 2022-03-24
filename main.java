@@ -1,6 +1,8 @@
 import edu.princeton.cs.algs4.DijkstraSP;
 import edu.princeton.cs.algs4.DirectedEdge;
 import edu.princeton.cs.algs4.EdgeWeightedDigraph;
+import edu.princeton.cs.algs4.TST;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,14 +14,18 @@ public class main {
     public static final String ANSI_GREEN = "\u001B[32m";
     private static EdgeWeightedDigraph graph;
     private static LinkedList<BusStop> stops;
+    private static TST<BusStop> tree;
 
 
     public static void main(String[] args) throws IOException {
         stops = new LinkedList<>();
+        tree = new TST<>();
         createGraph();
+        populateTST();
         TripTable tt = new TripTable();
 
-        tt.timeQuery("9:05:36");
+        for(String key : tree.keysWithPrefix("HASTINGS"))
+            System.out.println(tree.get(key));
     }
 
     static void createGraph() throws FileNotFoundException {
@@ -29,7 +35,7 @@ public class main {
         int largestStop = -1;
 
         while (sr.hasNext()) {
-            String stop =  sr.nextLine();
+            String stop = sr.nextLine();
             if (Integer.parseInt(stop.split(",")[0]) > largestStop)
                 largestStop = Integer.parseInt(stop.split(",")[0]);
             addStop(stop);
@@ -71,6 +77,12 @@ public class main {
             }
             pastStop = Integer.parseInt(values[3]);
             add = true;
+        }
+    }
+
+    static void populateTST(){
+        for(BusStop stop : stops){
+            tree.put(stop.name.strip(), stop);
         }
     }
 
