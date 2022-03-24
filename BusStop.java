@@ -1,4 +1,3 @@
-
 public class BusStop {
 
     int stopID;
@@ -26,14 +25,6 @@ public class BusStop {
         this.parent = parent;
     }
 
-    public int getStopID() {
-        return stopID;
-    }
-
-    public void setStopID(int stopID) {
-        this.stopID = stopID;
-    }
-
     public int getCode() {
         return code;
     }
@@ -50,54 +41,6 @@ public class BusStop {
         this.name = name;
     }
 
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getZoneID() {
-        return zoneID;
-    }
-
-    public void setZoneID(String zoneID) {
-        this.zoneID = zoneID;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public int getLocType() {
-        return locType;
-    }
-
-    public void setLocType(int locType) {
-        this.locType = locType;
-    }
-
     public String getParent() {
         return parent;
     }
@@ -108,11 +51,9 @@ public class BusStop {
 
     @Override
     public String toString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("\nStop ID: ").append(stopID).append("\nStop Code: ").append(code).append("\nStop Name: ").append(name).append("\nStop Destination: ").append(destination);
-        sb.append("\nStop Latitude, Longitude: ").append(latitude).append(", ").append(longitude).append("\nStop Zone: ").append(zoneID).append("\nStop Location Type: ");
-        sb.append(locType).append("\nStop Parent: ").append(parent).append("\n\n");
-        return sb.toString();
+        return "\nStop ID: " + stopID + "\nStop Code: " + code + "\nStop Name: " + name +
+                "\nStop Destination: " + destination + "\nStop Latitude, Longitude: " + latitude + ", " + longitude +
+                "\nStop Zone ID: " + zoneID + "\nStop Location Type: " + locType;
     }
 }
 

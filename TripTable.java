@@ -52,7 +52,7 @@ public class TripTable implements Iterable<Trip> {
 
         while (sr.hasNextLine()) {
             String[] values = sr.nextLine().split(",");
-            if (main.validTime(values[1]) && main.validTime(values[2])) {
+            if (main.validateTime(values[1]) && main.validateTime(values[2])) {
                 int tripID = Integer.parseInt(values[0]);
                 if (tripID != newTrip.tripID) {
                     trips.add(newTrip);
