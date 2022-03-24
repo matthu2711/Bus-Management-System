@@ -23,7 +23,6 @@ public class main {
         createGraph();
         populateTST();
         TripTable tt = new TripTable();
-        populateTree();
 
         for(String key : tree.keysWithPrefix("HASTINGS"))
             System.out.println(tree.get(key));
@@ -82,12 +81,6 @@ public class main {
     }
 
     static void populateTST(){
-        for(BusStop stop : stops){
-            tree.put(stop.name.strip(), stop);
-        }
-    }
-
-    static void populateTree(){
         for(BusStop stop : stops)
             tree.put(stop.name.strip(), stop);
     }
