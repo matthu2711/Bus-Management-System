@@ -11,7 +11,6 @@ import java.util.*;
 public class main {
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
@@ -71,7 +70,7 @@ public class main {
                             System.out.println(ANSI_RED + "There is no stop with Stop Name/Name prefix of \"" + search + "\"\n" +ANSI_RESET);
                         else {
                             System.out.println(sb);
-                            System.out.println("\nThe information for each stop with Stop Name/Name prefix of \"" + search + "\" was printed above");
+                            System.out.println("The information for each stop with Stop Name/Name prefix of \"" + search + "\" was printed above");
                         }
                     }
                     else if(values[0].strip().equals("st")){
