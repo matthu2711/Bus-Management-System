@@ -11,21 +11,82 @@ import java.util.*;
 public class main {
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_RED = "\u001B[31m";
+
     private static EdgeWeightedDigraph graph;
     private static LinkedList<BusStop> stops;
     private static TST<BusStop> tree;
 
 
     public static void main(String[] args) throws IOException {
+        System.out.println(ANSI_PURPLE + "\nOpening the Vancouver Bus Management System\n" + ANSI_RESET);
+
         stops = new LinkedList<>();
         tree = new TST<>();
         createGraph();
         populateTST();
         TripTable tt = new TripTable();
+        boolean exit = false;
+        Scanner sr = new Scanner(System.in);
+        printCommands();
 
-        for(String key : tree.keysWithPrefix("HASTINGS"))
-            System.out.println(tree.get(key));
+
+        while(!exit) {
+            System.out.print(ANSI_CYAN + "Insert Command: " + ANSI_RESET);
+            if(sr.hasNext()){
+                String input = sr.nextLine();
+                if(input.length() == 1) {
+                    if(input.equals("h"))
+                        printCommands();
+                    else if(input.equals("e"))
+                        exit = true;
+                    else
+                        System.out.println(ANSI_RED + "Incorrect Command: Use h to relist valid commands\n" + ANSI_RESET);
+                }
+                else {
+                    String[] values = input.split(" ");
+                    if(values[0].strip().equals("sp")){
+                        if(values.length == 3){
+                            if(values[1].equals(values[2])){
+                                System.out.println(ANSI_RED + "Incorrect Input: Enter two distinct Stop IDs\n" + ANSI_RESET);
+                            }
+                            else if(validateStop(values[1]) && validateStop(values[2])){
+                                printPath(Integer.parseInt(values[1]), Integer.parseInt(values[2]));
+                            }
+                        }
+                        else
+                            System.out.println(ANSI_RED + "Incorrect Input: Must insert two stop IDs\n" + ANSI_RESET);
+                    }
+                    else if(values[0].strip().equals("ss")){
+                        String search = input.substring(2).strip().toUpperCase();
+                        StringBuilder sb = new StringBuilder();
+                        for(String key : tree.keysWithPrefix(search)) {
+                            sb.append(tree.get(key));
+                        }
+                        if(sb.toString().length() == 0)
+                            System.out.println(ANSI_RED + "There is no stop with Stop Name/Name prefix of \"" + search + "\"\n" +ANSI_RESET);
+                        else {
+                            System.out.println(sb);
+                            System.out.println("The information for each stop with Stop Name/Name prefix of \"" + search + "\" was printed above");
+                        }
+                    }
+                    else if(values[0].strip().equals("st")){
+                        if(validateTime(values[1]))
+                            tt.timeQuery(values[1]);
+                        else
+                            System.out.println(ANSI_RED + "Incorrect Input: Time must be in hh:mm:ss format. Max allowed time is " +
+                                    "23:59:59\n" + ANSI_RESET);
+                    }
+                    else
+                        System.out.println(ANSI_RED + "Incorrect Input: Use h to relist valid commands\n" + ANSI_RESET);
+
+                }
+            }
+        }
+        System.out.println(ANSI_PURPLE + "Closing the Vancouver Bus Management System");
     }
 
     static void createGraph() throws FileNotFoundException {
@@ -86,8 +147,29 @@ public class main {
     }
 
     static boolean validateTime(String time) {
-        String[] timeSplit = time.strip().split(":");
-        return !(Integer.parseInt(timeSplit[0]) > 24 || Integer.parseInt(timeSplit[1]) > 59 || Integer.parseInt(timeSplit[2]) > 59);
+        try {
+            String[] timeSplit = time.strip().split(":");
+            return !(Integer.parseInt(timeSplit[0]) > 24 || Integer.parseInt(timeSplit[1]) > 59 || Integer.parseInt(timeSplit[2]) > 59);
+        }
+        catch(Exception e){
+            return false;
+        }
+    }
+
+    static boolean validateStop(String ID) {
+        int IDint;
+        try {
+            IDint = Integer.parseInt(ID);
+        } catch (Exception e) {
+            System.out.println(ANSI_RED + "Incorrect Input: Stop ID must be a number\n" + ANSI_RESET);
+            return false;
+        }
+        for (BusStop stop : stops)
+            if (stop.stopID == IDint)
+                return true;
+
+        System.out.println(ANSI_RED + "There is no stop with Stop ID " + IDint + "\n" + ANSI_RESET);
+        return false;
     }
 
     static void addStop(String stop){
@@ -124,15 +206,36 @@ public class main {
     private static void printPath(int from, int to){
         DijkstraSP sp = new DijkstraSP(graph, from);
         int finalVertex = -1;
-        StringBuilder sb = new StringBuilder();
-        sb.append("The path from ").append(from).append(" to ").append(to).append(" is as follows:\n");
-        for (DirectedEdge edge : sp.pathTo(to)) {
-            sb.append(edge.from()).append(" -> ");
-            finalVertex = edge.to();
+        if(sp.hasPathTo(to)) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("The path from ").append(from).append(" to ").append(to).append(" is as follows:\n");
+            for (DirectedEdge edge : sp.pathTo(to)) {
+                sb.append(edge.from()).append(" -> ");
+                finalVertex = edge.to();
+            }
+            sb.append(finalVertex).append("\n");
+            sb.append("This path has a cost of: ").append(sp.distTo(to)).append("\n");
+            System.out.println(sb);
         }
-        sb.append(finalVertex).append("\n");
-        sb.append("This path has a cost of: ").append(sp.distTo(to)).append("\n");
-        System.out.println(sb);
+        else
+            System.out.println(ANSI_RED + "No path from " + from + " to " + to + " exists" + ANSI_RESET);
+    }
+
+    private static void printCommands(){
+        System.out.println(ANSI_YELLOW + "Below are the following commands available:\n" + ANSI_RESET);
+        System.out.println("Exit: e");
+        System.out.println(ANSI_CYAN + "Exits the program\n" + ANSI_RESET);
+        System.out.println("Help: h");
+        System.out.println(ANSI_CYAN + "Lists these commands again\n" + ANSI_RESET);
+        System.out.println("Shortest Path: sp <Source Stop ID> <Destination Stop ID>");
+        System.out.println(ANSI_CYAN + "Finds shortest paths between the 2 bus stops, returning the list of stops en route as well as the associated “cost”." + ANSI_RESET);
+        System.out.println(ANSI_BLUE + "Example: sp 646 378\n" + ANSI_RESET);
+        System.out.println("Stop Search: ss <Stop Name>");
+        System.out.println(ANSI_CYAN + "Searches for a bus stop by the name inserted, and returns the full stop information for each stop matching" + ANSI_RESET);
+        System.out.println(ANSI_BLUE + "Example: ss Hastings \n" + ANSI_RESET);
+        System.out.println("Trip Arrival Search: st <Arrival Time (hh:mm:ss)>");
+        System.out.println(ANSI_CYAN + "Searches for all trips containing the inputted arrival time and returns all trips sorted by trip ID" + ANSI_RESET);
+        System.out.println(ANSI_BLUE + "Example: st 9:35:02 \n" + ANSI_RESET);
     }
 }
 

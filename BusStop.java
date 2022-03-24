@@ -53,7 +53,7 @@ public class BusStop {
     public String toString(){
         return "\nStop ID: " + stopID + "\nStop Code: " + code + "\nStop Name: " + name +
                 "\nStop Destination: " + destination + "\nStop Latitude, Longitude: " + latitude + ", " + longitude +
-                "\nStop Zone ID: " + zoneID + "\nStop Location Type: " + locType;
+                "\nStop Zone ID: " + zoneID + "\nStop Location Type: " + locType + "\n";
     }
 }
 
