@@ -15,6 +15,7 @@ public class main {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_RED = "\u001B[31m";
 
     private static EdgeWeightedDigraph graph;
     private static LinkedList<BusStop> stops;
@@ -35,7 +36,7 @@ public class main {
 
 
         while(!exit) {
-            System.out.print("Insert Command: ");
+            System.out.print(ANSI_CYAN + "Insert Command: " + ANSI_RESET);
             if(sr.hasNext()){
                 String input = sr.nextLine();
                 if(input.length() == 1) {
@@ -44,30 +45,39 @@ public class main {
                     else if(input.equals("e"))
                         exit = true;
                     else
-                        System.out.println("Incorrect Input\n");
+                        System.out.println(ANSI_RED + "Incorrect Command: Use h to relist valid commands\n" + ANSI_RESET);
                 }
                 else {
                     String[] values = input.split(" ");
                     if(values[0].strip().equals("sp")){
-                        System.out.println("sp");
+                        if(values.length == 3){
+                            if(validateStop(values[1]) && validateStop(values[2])){
+                                printPath(Integer.parseInt(values[1]), Integer.parseInt(values[2]));
+                            }
+                        }
+                        else
+                            System.out.println(ANSI_RED + "Incorrect Input: Must insert two stop IDs\n" + ANSI_RESET);
                     }
                     else if(values[0].strip().equals("ss")){
-                        System.out.println("ss");
+                        
                     }
                     else if(values[0].strip().equals("st")){
                         if(validateTime(values[1]))
                             tt.timeQuery(values[1]);
                         else
-                            System.out.println("Incorrect Input: Time must be in hh:mm:ss format. Max allowed time is " +
-                                    "23:59:59\n");
+                            System.out.println(ANSI_RED + "Incorrect Input: Time must be in hh:mm:ss format. Max allowed time is " +
+                                    "23:59:59\n" + ANSI_RESET);
                     }
                     else
-                        System.out.println("Incorrect Input: Use h to relist valid commands\n");
+                        System.out.println(ANSI_RED + "Incorrect Input: Use h to relist valid commands\n" + ANSI_RESET);
 
                 }
             }
         }
         System.out.println(ANSI_PURPLE + "Closing the Vancouver Bus Management System");
+    }
+
+    private static void printPath(String value, String value1) {
     }
 
     static void createGraph() throws FileNotFoundException {
@@ -130,6 +140,22 @@ public class main {
     static boolean validateTime(String time) {
         String[] timeSplit = time.strip().split(":");
         return !(Integer.parseInt(timeSplit[0]) > 24 || Integer.parseInt(timeSplit[1]) > 59 || Integer.parseInt(timeSplit[2]) > 59);
+    }
+
+    static boolean validateStop(String ID) {
+        int IDint;
+        try {
+            IDint = Integer.parseInt(ID);
+        } catch (Exception e) {
+            System.out.println(ANSI_RED + "Incorrect Input: Stop ID must be a number\n" + ANSI_RESET);
+            return false;
+        }
+        for (BusStop stop : stops)
+            if (stop.stopID == IDint)
+                return true;
+
+        System.out.println(ANSI_RED + "There is no stop with Stop ID\n" + IDint + ANSI_RESET);
+        return false;
     }
 
     static void addStop(String stop){
