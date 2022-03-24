@@ -87,7 +87,7 @@ public class TripTable implements Iterable<Trip> {
             }
             System.out.println(sb2);
             System.out.println(main.ANSI_GREEN + "The following " + (result.size() > 1 ? "trips all contain" : "trip contains") + " the arrival time of " + time +
-                    ": (The information for " + (result.size() > 1 ? "each trip" : "the trip") + " has been outputted above)" + main.ANSI_RESET);
+                    " : (The information for " + (result.size() > 1 ? "each trip" : "the trip") + " has been outputted above)" + main.ANSI_RESET);
             System.out.println(sb1);
         }
     }

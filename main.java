@@ -55,10 +55,14 @@ public class main {
                         System.out.println("ss");
                     }
                     else if(values[0].strip().equals("st")){
-                        System.out.println("st");
+                        if(validateTime(values[1]))
+                            tt.timeQuery(values[1]);
+                        else
+                            System.out.println("Incorrect Input: Time must be in hh:mm:ss format. Max allowed time is " +
+                                    "23:59:59\n");
                     }
                     else
-                        System.out.println("Incorrect Input\n");
+                        System.out.println("Incorrect Input: Use h to relist valid commands\n");
 
                 }
             }
