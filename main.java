@@ -12,20 +12,45 @@ public class main {
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+
     private static EdgeWeightedDigraph graph;
     private static LinkedList<BusStop> stops;
     private static TST<BusStop> tree;
 
 
     public static void main(String[] args) throws IOException {
+        System.out.println(ANSI_PURPLE + "\nOpening the Vancouver Bus Management System\n" + ANSI_RESET);
+
         stops = new LinkedList<>();
         tree = new TST<>();
         createGraph();
         populateTST();
         TripTable tt = new TripTable();
+        boolean exit = false;
 
-        for(String key : tree.keysWithPrefix("HASTINGS"))
-            System.out.println(tree.get(key));
+        System.out.println(ANSI_YELLOW + "Below are the following commands available:\n" + ANSI_RESET);
+        System.out.println("Exit: e");
+        System.out.println(ANSI_CYAN + "Exits the program\n" + ANSI_RESET);
+        System.out.println("Help: h");
+        System.out.println(ANSI_CYAN + "Lists these commands again\n" + ANSI_RESET);
+        System.out.println("Shortest Path: sp <Source Stop ID> <Destination Stop ID>");
+        System.out.println(ANSI_CYAN + "Finds shortest paths between the 2 bus stops, returning the list of stops en route as well as the associated “cost”." + ANSI_RESET);
+        System.out.println(ANSI_BLUE + "Example: sp 646 378\n" + ANSI_RESET);
+        System.out.println("Stop Search: ss <Stop Name>");
+        System.out.println(ANSI_CYAN + "Searches for a bus stop by the name inserted, and returns the full stop information for each stop matching" + ANSI_RESET);
+        System.out.println(ANSI_BLUE + "Example: ss Hastings \n" + ANSI_RESET);
+        System.out.println("Trip Arrival Search: st <Arrival Time (hh:mm:ss)>");
+        System.out.println(ANSI_CYAN + "Searches for all trips containing the inputted arrival time and returns all trips sorted by trip ID" + ANSI_RESET);
+        System.out.println(ANSI_BLUE + "Example: st 9:35:02 \n" + ANSI_RESET);
+
+        //while(!exit){
+
+
+        //}
+        System.out.println(ANSI_PURPLE + "Closing the Vancouver Bus Management System");
     }
 
     static void createGraph() throws FileNotFoundException {
