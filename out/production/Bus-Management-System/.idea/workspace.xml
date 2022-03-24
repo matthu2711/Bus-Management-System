@@ -60,14 +60,15 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="extract.method.default.visibility" value="private" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="ReaderModeSettings">
     <option name="enabled" value="false" />
@@ -118,7 +119,7 @@
       <workItem from="1647631866138" duration="7111000" />
       <workItem from="1647639295453" duration="66000" />
       <workItem from="1647639373590" duration="675000" />
-      <workItem from="1647640096741" duration="43204000" />
+      <workItem from="1647640096741" duration="54140000" />
     </task>
     <task id="LOCAL-00001" summary="- Created initial graph with stops and their edges">
       <created>1647637860836</created>
