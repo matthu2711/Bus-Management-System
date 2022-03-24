@@ -76,7 +76,7 @@ public class TripTable implements Iterable<Trip> {
         Collections.sort(result);
 
         if(result.size() == 0){
-            System.out.println("No trips contain this arrival time of " + time);
+            System.out.println(main.ANSI_RED + "No trips contain this arrival time of " + time +  main.ANSI_RESET + "\n");
         }
         else {
             StringBuilder sb1 = new StringBuilder();
@@ -86,9 +86,9 @@ public class TripTable implements Iterable<Trip> {
                 sb2.append(trip);
             }
             System.out.println(sb2);
-            System.out.println(main.ANSI_GREEN + "The following " + (result.size() > 1 ? "trips all contain" : "trip contains") + " the arrival time of " + time +
-                    " : (The information for " + (result.size() > 1 ? "each trip" : "the trip") + " has been outputted above)" + main.ANSI_RESET);
-            System.out.println(sb1);
+            System.out.println(main.ANSI_CYAN + "The following " + (result.size() > 1 ? "trips all contain" : "trip contains") + " the arrival time of " + time +
+                    " : \n(The information for " + (result.size() > 1 ? "each trip" : "the trip") + " has been outputted above)\n" + main.ANSI_RESET);
+            System.out.println(sb1 + "\n");
         }
     }
 
@@ -122,7 +122,7 @@ public class TripTable implements Iterable<Trip> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(main.ANSI_YELLOW).append("\n\nTrip ").append(tripID).append("""
+        sb.append(main.ANSI_CYAN).append("\n\nTrip ").append(tripID).append("""
                      contains the following stops. The below info is in the following format of:
                     Stop ID :: Arrival Time :: Depart Time :: Distance Travelled
                     """).append(main.ANSI_RESET).append("\n");

@@ -51,7 +51,10 @@ public class main {
                     String[] values = input.split(" ");
                     if(values[0].strip().equals("sp")){
                         if(values.length == 3){
-                            if(validateStop(values[1]) && validateStop(values[2])){
+                            if(values[1].equals(values[2])){
+                                System.out.println(ANSI_RED + "Incorrect Input: Enter two distinct Stop IDs\n" + ANSI_RESET);
+                            }
+                            else if(validateStop(values[1]) && validateStop(values[2])){
                                 printPath(Integer.parseInt(values[1]), Integer.parseInt(values[2]));
                             }
                         }
@@ -59,7 +62,17 @@ public class main {
                             System.out.println(ANSI_RED + "Incorrect Input: Must insert two stop IDs\n" + ANSI_RESET);
                     }
                     else if(values[0].strip().equals("ss")){
-                        
+                        String search = input.substring(2).strip().toUpperCase();
+                        StringBuilder sb = new StringBuilder();
+                        for(String key : tree.keysWithPrefix(search)) {
+                            sb.append(tree.get(key));
+                        }
+                        if(sb.toString().length() == 0)
+                            System.out.println(ANSI_RED + "There is no stop with Stop Name/Name prefix of \"" + search + "\"\n" +ANSI_RESET);
+                        else {
+                            System.out.println(sb);
+                            System.out.println("\nThe information for each stop with Stop Name/Name prefix of \"" + search + "\" was printed above");
+                        }
                     }
                     else if(values[0].strip().equals("st")){
                         if(validateTime(values[1]))
@@ -75,9 +88,6 @@ public class main {
             }
         }
         System.out.println(ANSI_PURPLE + "Closing the Vancouver Bus Management System");
-    }
-
-    private static void printPath(String value, String value1) {
     }
 
     static void createGraph() throws FileNotFoundException {
@@ -138,8 +148,13 @@ public class main {
     }
 
     static boolean validateTime(String time) {
-        String[] timeSplit = time.strip().split(":");
-        return !(Integer.parseInt(timeSplit[0]) > 24 || Integer.parseInt(timeSplit[1]) > 59 || Integer.parseInt(timeSplit[2]) > 59);
+        try {
+            String[] timeSplit = time.strip().split(":");
+            return !(Integer.parseInt(timeSplit[0]) > 24 || Integer.parseInt(timeSplit[1]) > 59 || Integer.parseInt(timeSplit[2]) > 59);
+        }
+        catch(Exception e){
+            return false;
+        }
     }
 
     static boolean validateStop(String ID) {
@@ -154,7 +169,7 @@ public class main {
             if (stop.stopID == IDint)
                 return true;
 
-        System.out.println(ANSI_RED + "There is no stop with Stop ID\n" + IDint + ANSI_RESET);
+        System.out.println(ANSI_RED + "There is no stop with Stop ID " + IDint + "\n" + ANSI_RESET);
         return false;
     }
 
@@ -192,15 +207,19 @@ public class main {
     private static void printPath(int from, int to){
         DijkstraSP sp = new DijkstraSP(graph, from);
         int finalVertex = -1;
-        StringBuilder sb = new StringBuilder();
-        sb.append("The path from ").append(from).append(" to ").append(to).append(" is as follows:\n");
-        for (DirectedEdge edge : sp.pathTo(to)) {
-            sb.append(edge.from()).append(" -> ");
-            finalVertex = edge.to();
+        if(sp.hasPathTo(to)) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("The path from ").append(from).append(" to ").append(to).append(" is as follows:\n");
+            for (DirectedEdge edge : sp.pathTo(to)) {
+                sb.append(edge.from()).append(" -> ");
+                finalVertex = edge.to();
+            }
+            sb.append(finalVertex).append("\n");
+            sb.append("This path has a cost of: ").append(sp.distTo(to)).append("\n");
+            System.out.println(sb);
         }
-        sb.append(finalVertex).append("\n");
-        sb.append("This path has a cost of: ").append(sp.distTo(to)).append("\n");
-        System.out.println(sb);
+        else
+            System.out.println(ANSI_RED + "No path from " + from + " to " + to + " exists" + ANSI_RESET);
     }
 
     private static void printCommands(){
