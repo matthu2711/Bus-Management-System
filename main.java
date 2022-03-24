@@ -66,7 +66,7 @@ public class main {
             if (Integer.parseInt(values[0]) != tripID) {
                 tripID = Integer.parseInt(values[0]);
             } else {
-                if(validTime(values[1])) {
+                if(validateTime(values[1])) {
                     int to = Integer.parseInt(values[3]);
                     for (DirectedEdge e : graph.adj(pastStop))
                         if (e.to() == to)
@@ -81,12 +81,11 @@ public class main {
     }
 
     static void populateTST(){
-        for(BusStop stop : stops){
+        for(BusStop stop : stops)
             tree.put(stop.name.strip(), stop);
-        }
     }
 
-    static boolean validTime(String time) {
+    static boolean validateTime(String time) {
         String[] timeSplit = time.strip().split(":");
         return !(Integer.parseInt(timeSplit[0]) > 24 || Integer.parseInt(timeSplit[1]) > 59 || Integer.parseInt(timeSplit[2]) > 59);
     }
@@ -110,11 +109,11 @@ public class main {
         if(!values[8].equals("") && !values[8].equals(" "))
             locType = Integer.parseInt(values[8]);
 
-        String stopName = change(values[2]);
+        String stopName = changeStopName(values[2]);
         stops.add(new BusStop(stopID, code, stopName, values[3], latitude, longitude, values[6], values[7], locType, parent));
     }
 
-    private static String change(String name){
+    private static String changeStopName(String name){
         String chars = name.substring(0, 2).strip();
         if (chars.equalsIgnoreCase("WB") || chars.equalsIgnoreCase("SB") || chars.equalsIgnoreCase("NB") || chars.equalsIgnoreCase("EB")) {
             return name.substring(3).trim() + name.charAt(2) + name.substring(0,2);
