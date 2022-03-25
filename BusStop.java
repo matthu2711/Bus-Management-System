@@ -1,15 +1,15 @@
 public class BusStop {
 
-    int stopID;
-    int code;
-    String name;
-    String destination;
-    double latitude;
-    double longitude;
-    String zoneID;
-    String url;
-    int locType;
-    String parent;
+    private final int stopID;
+    private final int code;
+    private final String name;
+    private final String destination;
+    private final double latitude;
+    private final double longitude;
+    private final String zoneID;
+    private final String url;
+    private final int locType;
+    private final String parent;
 
 
     // DS to contain all data of each BusStop which is saved to the TST
@@ -31,29 +31,22 @@ public class BusStop {
         return code;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getParent() {
         return parent;
     }
 
-    public void setParent(String parent) {
-        this.parent = parent;
+    public int getStopID() {
+        return stopID;
     }
 
-    // Formats strings for printing containing all stop data
+    // Format strings for printing containing all stop data
     @Override
-    public String toString(){
+    public String toString() {
         return "\nStop ID: " + stopID + "\nStop Code: " + code + "\nStop Name: " + name +
                 "\nStop Destination: " + destination + "\nStop Latitude, Longitude: " + latitude + ", " + longitude +
                 "\nStop Zone ID: " + zoneID + "\nStop Location Type: " + locType + "\n";

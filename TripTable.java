@@ -9,7 +9,6 @@ public class TripTable implements Iterable<Trip> {
 
     private static LinkedList<Trip> trips;
 
-
     public TripTable() throws FileNotFoundException {
         trips = new LinkedList<>();
         readDate();
@@ -18,15 +17,27 @@ public class TripTable implements Iterable<Trip> {
     // Formats arrival and destination time for easier printing, validating and comparison
     static public class TripTime implements Comparable<TripTime> {
 
-        public int hour;
-        public int min;
-        public int sec;
+        private final int hour;
+        private final int min;
+        private final int sec;
 
         public TripTime(String time) {
             String[] values = time.split(":");
             this.hour = Integer.parseInt(values[0].strip());
             this.min = Integer.parseInt(values[1].strip());
             this.sec = Integer.parseInt(values[2].strip());
+        }
+
+        public int getHour() {
+            return hour;
+        }
+
+        public int getMin() {
+            return min;
+        }
+
+        public int getSec() {
+            return sec;
         }
 
         @Override
@@ -56,7 +67,7 @@ public class TripTable implements Iterable<Trip> {
             String[] values = sr.nextLine().split(",");
             if (main.validateTime(values[1]) && main.validateTime(values[2])) {
                 int tripID = Integer.parseInt(values[0]);
-                if (tripID != newTrip.tripID) {
+                if (tripID != newTrip.getTripID()) {
                     trips.add(newTrip);
                     newTrip = new Trip(tripID);
                 }
@@ -65,14 +76,14 @@ public class TripTable implements Iterable<Trip> {
         }
     }
 
-    // Function used to search for all trips containg the passed arrival time parameter (and outputs error message if no trip exists)
+    // Function used to search for all trips containing the passed arrival time parameter (and outputs error message if no trip exists)
     public void timeQuery(String time) {
         TripTime query = new TripTime(time);
         LinkedList<Trip> result = new LinkedList<>();
 
         for (Trip trip : trips) {
-            for (TripInfo info : trip.transfers)
-                if (info.arrive.compareTo(query) == 0)
+            for (TripInfo info : trip.getTransfers())
+                if (info.getArrive().compareTo(query) == 0)
                     result.add(trip);
         }
 
@@ -85,7 +96,7 @@ public class TripTable implements Iterable<Trip> {
             StringBuilder sb1 = new StringBuilder();
             StringBuilder sb2 = new StringBuilder();
             for (Trip trip : result) {
-                sb1.append(trip.tripID).append(", ");
+                sb1.append(trip.getTripID()).append(", ");
                 sb2.append(trip);
             }
             System.out.println(sb2);
@@ -113,11 +124,19 @@ public class TripTable implements Iterable<Trip> {
 
 // Class used for individual trip, containing all stop/transfer info contained in that trip
 class Trip implements Iterable<TripInfo>, Comparable<Trip> {
-    public int tripID;
-    public LinkedList<TripInfo> transfers = new LinkedList<>();
+    private final int tripID;
+    private final LinkedList<TripInfo> transfers = new LinkedList<>();
 
     public Trip(int tripID) {
         this.tripID = tripID;
+    }
+
+    public int getTripID() {
+        return tripID;
+    }
+
+    public LinkedList<TripInfo> getTransfers() {
+        return transfers;
     }
 
     public void addTripInfo(String[] info) {
@@ -137,7 +156,6 @@ class Trip implements Iterable<TripInfo>, Comparable<Trip> {
         return sb.toString();
     }
 
-
     @Override
     public Iterator<TripInfo> iterator() {
         return transfers.iterator();
@@ -145,42 +163,41 @@ class Trip implements Iterable<TripInfo>, Comparable<Trip> {
 
     @Override
     public int compareTo(@NotNull Trip o) {
-        int compareID = o.tripID;
-        return this.tripID - compareID;
+        return this.tripID - o.tripID;
     }
 }
 
 // Trip info class used to store data for each part of a trip
 class TripInfo {
 
-    public TripTable.TripTime arrive, depart;
-    public int stopID, stopSeq, stopHeadSign, pickupType, dropType;
-    public double dist;
+    private final TripTable.TripTime arrive, depart;
+    private final int stopID;
+    private int stopSeq, stopHeadSign, pickupType, dropType;
+    private double dist;
 
     //trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign
     //pickup_type,drop_off_type,shape_dist_traveled
     public TripInfo(String[] values) {
-        this.stopSeq = -1;
-        this.stopHeadSign = -1;
-        this.pickupType = -1;
-        this.dropType = -1;
-        this.dist = 0;
 
         // Used to check if values are correct and present, if not uses a placeholder which is used for formatting
         if (values.length == 9 && !values[8].equals("") && !values[8].equals(" "))
-            dist = Double.parseDouble(values[8]);
+            this.dist = Double.parseDouble(values[8]);
         if (!values[4].equals("") && !values[4].equals(" "))
-            stopSeq = Integer.parseInt(values[4]);
+            this.stopSeq = Integer.parseInt(values[4]);
         if (!values[5].equals("") && !values[5].equals(" "))
-            stopHeadSign = Integer.parseInt(values[5]);
+            this.stopHeadSign = Integer.parseInt(values[5]);
         if (!values[6].equals("") && !values[6].equals(" "))
-            pickupType = Integer.parseInt(values[6]);
+            this.pickupType = Integer.parseInt(values[6]);
         if (!values[7].equals("") && !values[7].equals(" "))
-            dropType = Integer.parseInt(values[7]);
+            this.dropType = Integer.parseInt(values[7]);
 
         arrive = new TripTable.TripTime(values[1]);
         depart = new TripTable.TripTime(values[2]);
         stopID = Integer.parseInt(values[3]);
+    }
+
+    public TripTable.TripTime getArrive() {
+        return arrive;
     }
 
     // Formats string into columns
@@ -201,14 +218,14 @@ class TripInfo {
 
     // Formats the times for the string output
     private void TripInfoString(StringBuilder sb, TripTable.TripTime arrive) {
-        if (arrive.hour <= 9)
+        if (arrive.getHour() <= 9)
             sb.append("0");
-        sb.append(arrive.hour).append(":");
-        if (arrive.min <= 9)
+        sb.append(arrive.getHour()).append(":");
+        if (arrive.getMin() <= 9)
             sb.append("0");
-        sb.append(arrive.min).append(":");
-        if (arrive.sec <= 9)
+        sb.append(arrive.getMin()).append(":");
+        if (arrive.getSec() <= 9)
             sb.append("0");
-        sb.append(arrive.sec).append(" :: ");
+        sb.append(arrive.getSec()).append(" :: ");
     }
 }
