@@ -144,7 +144,7 @@ public class main {
     // Puts the stops into the TST
     static void populateTST() {
         for (BusStop stop : stops)
-            tree.put(stop.name.strip(), stop);
+            tree.put(stop.getName().strip(), stop);
     }
 
     // Ensures the time is in the correct format and the max time allowed is 24:59:59
@@ -167,7 +167,7 @@ public class main {
             return false;
         }
         for (BusStop stop : stops)
-            if (stop.stopID == IDint)
+            if (stop.getStopID() == IDint)
                 return true;
 
         System.out.println(ANSI_RED + "There is no stop with Stop ID " + IDint + "\n" + ANSI_RESET);
