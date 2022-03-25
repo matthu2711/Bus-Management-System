@@ -227,7 +227,7 @@ public class main {
 
     // When command h is entered, this function is called to output all available commands again to the terminal
     private static void printCommands() {
-        System.out.println(ANSI_YELLOW + "Below are the following commands available:\n" + ANSI_RESET);
+        System.out.println(ANSI_YELLOW + "\nBelow are the following commands available:\n" + ANSI_RESET);
         System.out.println("Exit: e");
         System.out.println(ANSI_CYAN + "Exits the program\n" + ANSI_RESET);
         System.out.println("Help: h");
