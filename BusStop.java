@@ -11,6 +11,8 @@ public class BusStop {
     int locType;
     String parent;
 
+
+    // DS to contain all data of each BusStop which is saved to the TST
     public BusStop(int stopID, int code, String name, String destination, double latitude, double longitude,
                    String zoneID, String url, int locType, String parent) {
         this.stopID = stopID;
@@ -49,6 +51,7 @@ public class BusStop {
         this.parent = parent;
     }
 
+    // Formats strings for printing containing all stop data
     @Override
     public String toString(){
         return "\nStop ID: " + stopID + "\nStop Code: " + code + "\nStop Name: " + name +
